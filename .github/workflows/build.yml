@@ -12,10 +12,18 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
-    - name: Unzip project files
+    - name: Unzip project files dynamically
       run: |
-        unzip subxpire-oct-31-2026-4-58-20-pm.zip -d .
-        mv subxpire-oct-31-2026-4-58-20-pm/* . || true
+        unzip *.zip -d extracted_project
+        cd extracted_project
+        if [ -d "app" ]; then
+          mv * ..
+        else
+          mv */* .. || true
+          mv * .. || true
+        fi
+        cd ..
+        rm -rf extracted_project
 
     - name: set up JDK 17
       uses: actions/setup-java@v4
